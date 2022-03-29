@@ -60,9 +60,14 @@ in
 
         #enable xdg directories
         #xdg.enable = true;
-        #xdg.configFile."toto".text = ''
-        #  hello world
-        #'';
+        ##useful example: create a .zprofile in right place. TODO find a better way to do this within zsh module
+        xdg.configFile."zsh/.zprofile".text = ''
+        
+                        ## enable brew command TODO install brew via nix
+                        eval "$(/opt/homebrew/bin/brew shellenv)"
+                        export HOMEBREW_NO_GITHUB_API=1
+                        export ZPLUG_HOME = "$HOME/.config/zsh/zplug"
+        '' ;
 
         #xdg.configFile = "~
 	# Let Home Manager install and manage itself.
@@ -108,7 +113,7 @@ in
 		zplug = {
 			enable = true;
                         ##TODO this doesn't work properly atm as (on mac at least) this needs to be loaded in .zprofile not .zshrc. manually added to .zprofile for now
-                        zplugHome = toString ../zsh;
+                        #zplugHome = toString ../zsh;
 			plugins = [
 			{name = "plugins/git"; tags = [from:oh-my-zsh]; }
 			{name = "plugins/thefuck"; tags = [from:oh-my-zsh]; }
@@ -130,9 +135,9 @@ in
                         bindkey '^[[B' history-substring-search-down
                         #Window title (in kitty at least)
                         #precmd () {print -Pn "\e]0;%~\a"}
-                        ## enable brew command TODO install brew via nix
-                        eval "$(/opt/homebrew/bin/brew shellenv)"
-                        export HOMEBREW_NO_GITHUB_API=1
+                        ## enable brew command (note: now done in zprofile sect below) TODO install brew via nix
+                        #eval "$(/opt/homebrew/bin/brew shellenv)"
+                        #export HOMEBREW_NO_GITHUB_API=1
                         '';
 	};
         programs.vim = {
