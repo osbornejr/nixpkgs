@@ -14,6 +14,7 @@ To setup and install `home-manager`, use the manual [here](https://rycee.gitlab.
 - add Homebrew (for casks only) via nix config
 - install kitty (and kitty.conf) via nix
 - add conda via nix? probably necessary for bioinformatics stuff
-
-
+- incorporate direnv with conda environments i.e. keep conda as an option for projects that need it, and add conda env layer automatically as well
+- julia via nix? Both julia and conda require FHS setup I think (see [here](https://github.com/olynch/scientific-fhs) for details
+- set up dtach for lightweight detachable environments (i.e. main benefit of tmux without the glug)
 
