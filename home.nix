@@ -48,6 +48,7 @@ in
 		ripgrep
 		m-cli
                 github-cli
+                imagemagick
 	];
 	# This value determines the Home Manager release that your
 	# configuration is compatible with. This helps avoid breakage
@@ -67,7 +68,7 @@ in
                         ## enable brew command TODO install brew via nix
                         eval "$(/opt/homebrew/bin/brew shellenv)"
                         export HOMEBREW_NO_GITHUB_API=1
-                        export ZPLUG_HOME = "$HOME/.config/zsh/zplug"
+                        export ZPLUG_HOME="$HOME/.config/zsh/zplug"
         '' ;
 
         #xdg.configFile = "~
@@ -97,10 +98,12 @@ in
 			update = "home-manager switch";
 			enix = "vim ~/.config/nixpkgs/home.nix";
 			szsh = ". ~/.config/zsh/.zshrc";
+                        conon = "source ~/.conda/conda_init";
+                        conoff = "conda activate base;conda deactivate";
 		};
 		history = {
 			size = 10000;
-			path = ".config/zsh/history";
+			path = "${config.xdg.dataHome}/zsh/history";
 		};
 
 
