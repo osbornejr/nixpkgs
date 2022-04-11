@@ -43,6 +43,7 @@ in
 	#Packages that are installed for user profile
 	home.packages = with pkgs; [
 		htop
+                wget
 		thefuck
 		dtach
 		ripgrep
@@ -69,6 +70,9 @@ in
                         eval "$(/opt/homebrew/bin/brew shellenv)"
                         export HOMEBREW_NO_GITHUB_API=1
                         export ZPLUG_HOME="$HOME/.config/zsh/zplug"
+                        ##aliases that are needed at login
+                        alias conon="source ~/.conda/conda_init"
+                        alias conoff="conda activate base;conda deactivate"
         '' ;
 
         #xdg.configFile = "~
@@ -98,8 +102,6 @@ in
 			update = "home-manager switch";
 			enix = "vim ~/.config/nixpkgs/home.nix";
 			szsh = ". ~/.config/zsh/.zshrc";
-                        conon = "source ~/.conda/conda_init";
-                        conoff = "conda activate base;conda deactivate";
 		};
 		history = {
 			size = 10000;
@@ -142,8 +144,14 @@ in
                         ## enable brew command (note: now done in zprofile sect below) TODO install brew via nix
                         #eval "$(/opt/homebrew/bin/brew shellenv)"
                         #export HOMEBREW_NO_GITHUB_API=1
+                        ## lets zsh be called by vim term and whilst first executing eval statement
+                          if [[ $1 == eval ]]
+                          then
+                          "$@"
+                          set --
+                          fi
                         '';
-	};
+                      };
         programs.vim = {
             enable = true;
             packageConfigurable = pkgs.vim_configurable.override {
@@ -179,6 +187,23 @@ in
               "continue to configure tab characters
               set viminfo+=n~/.config/vim/viminfo
               set smarttab
+              
+
+              "" not working atm
+              let s:VIMROOT = $HOME.".config/vim"
+
+              " Create necessary folders if they don't already exist.
+              if exists("*mkdir")
+              silent! call mkdir(s:VIMROOT, "p")
+              silent! call mkdir(s:VIMROOT."/swap", "p")
+              silent! call mkdir(s:VIMROOT."/undo", "p")
+              silent! call mkdir(s:VIMROOT."/backup", "p")
+              else
+              echo "Error: Create the directories ".s:VIMROOT."/, ".s:VIMROOT."/undo/," ".s:VIMROOT."/backup/, and ".s:VIMROOT."/swap/first."
+              exit
+              endif
+
+
               "load colorschemes
               packloadall
               "set background to terminal colour
